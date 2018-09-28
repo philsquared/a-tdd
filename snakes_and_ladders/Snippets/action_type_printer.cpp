@@ -10,7 +10,6 @@ std::ostream& operator <<( std::ostream& os, Action::Type type ) {
         case Action::Type::Move: return os << "Move";
         case Action::Type::Win: return os << "Win";
         default:
-            os << "{unknown enum value: " << (int)type << "}";
-            assert(false);
+            throw std::logic_error( "{unknown enum value: " + std::to_string( (int)type ) + "}" );
     }
 }
