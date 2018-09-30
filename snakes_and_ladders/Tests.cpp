@@ -1,4 +1,5 @@
 #include <random>
+#include <iostream>
 #include "Board.h"
 
 #include "catch.hpp"
@@ -59,13 +60,14 @@ public:
                 std::back_inserter( m_players ),
                 []( Colour colour ){ return Player{ colour, 1 }; } );
     }
-    uint32_t currentPlayer() { return m_currentPlayer; }
 
     auto takeTurn() -> TurnInfo {
-        const auto player = m_players[m_currentPlayer];
+        auto& player = m_players[m_currentPlayer];
         if( ++m_currentPlayer == m_players.size() )
             m_currentPlayer = 0;
         auto action = m_board.landOn(player.square+m_die());
+        if( action.type == Action::Type::MoveTo )
+            player.square = action.target;
         return TurnInfo{player, action};
     }
 };
@@ -83,7 +85,7 @@ TEST_CASE("Board tracks where you land") {
     REQUIRE( board.landOn( 101 ).type == Action::Type::NoMove );
 }
 
-SCENARIO("Players take turns") {
+SCENARIO("Players take turns"") {
 
     GIVEN( "A game object with two players" ) {
         Game game({Colour::Red, Colour::Blue});
@@ -121,4 +123,37 @@ TEST_CASE( "Game"){
     verify( 1, Colour::Red, { Action::Type::MoveTo, 38 } );
     verify( 2, Colour::Blue, { Action::Type::MoveTo, 3 } );
 
+}
+
+std::ostream& operator <<( std::ostream& os, Colour colour ) {
+    switch( colour ) {
+        case Colour::Red: return os << "Red";
+        case Colour::Blue: return os << "Blue";
+        case Colour::Green: return os << "Green";
+        case Colour::Yellow: return os << "Yellow";
+        default:
+            throw std::logic_error( "{unknown enum value: " + std::to_string( (int)colour ) + "}" );
+    }
+}
+
+TEST_CASE() {
+    Game game( { Colour::Red, Colour::Blue, Colour::Green } );
+
+    for( bool stillPlaying = true; stillPlaying;){
+        auto turn = game.takeTurn();
+
+        std::cout << turn.player.colour << " ";
+        switch( turn.action.type ) {
+            case Action::Type::MoveTo:
+                std::cout << "moves to " << turn.action.target << "\n";
+                break;
+            case Action::Type::NoMove:
+                std::cout << "misses go\n";
+                break;
+            case Action::Type::Win:
+                std::cout << "wins!\n";
+                stillPlaying = false;
+                break;
+        }
+    }
 }
