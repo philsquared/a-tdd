@@ -36,3 +36,4 @@ The following are some of the references, and source materials, from my class, A
 * [Computerworld article reporting on NIST report on software bugs](http://www.computerworld.com/article/2575560/it-management/study--buggy-software-costs-users--vendors-nearly--60b-annually.html)
 * [Critiques of NIST report on software bugs](http://www.satisfice.com/nist.htm)
 * [PRWeb Article on 2013 Cambridge University study on cost of software bugs](http://www.prweb.com/releases/2013/1/prweb10298185.htm)
+* [Kevlin Henney - Introducing the FLUID principles](https://www.slideshare.net/Kevlin/introducing-the-fluid-principles)
