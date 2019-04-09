@@ -5,6 +5,7 @@ The following are some of the references, and source materials, from my class, A
 ## Talks:
 
 * [Kevlin Henney - Seven Ineffective Coding Habits (timed to section on TDD)](https://www.youtube.com/watch?v=SUIUZ09mnwM&feature=youtu.be&t=49m52s)
+* [Kevlin Henney - Deconstructing SOLID](https://vimeo.com/157708450)
 * [Phil Nash on Catch (1.x)](https://www.youtube.com/watch?v=C2LcIp56i-8)
 * [Phil Nash on Catch2](https://www.youtube.com/watch?v=3tIE6X5FjDE)
 * [Phil Nash - Seeking Simplicity](https://www.youtube.com/watch?v=EeviEFkKb6M&t=0s&list=PLJ8qy7OeQ8LQ3dgDOGAGDXBKvh0UItjE6&index=2)
