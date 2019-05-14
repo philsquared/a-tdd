@@ -1,6 +1,6 @@
 /*
- *  Catch v2.7.0-develop.2
- *  Generated: 2019-04-04 16:00:49.937519
+ *  Catch v2.7.2-develop.1
+ *  Generated: 2019-05-14 06:55:03.533605
  *  ----------------------------------------------------------
  *  This file has been merged from multiple headers. Please don't edit it directly
  *  Copyright (c) 2019 Two Blue Cubes Ltd. All rights reserved.
@@ -15,7 +15,7 @@
 
 #define CATCH_VERSION_MAJOR 2
 #define CATCH_VERSION_MINOR 7
-#define CATCH_VERSION_PATCH 0
+#define CATCH_VERSION_PATCH 2
 
 #ifdef __clang__
 #    pragma clang system_header
@@ -1172,19 +1172,24 @@ namespace Catch {
 
 namespace Catch {
 
-    struct IEnumInfo {
-        virtual ~IEnumInfo();
+    namespace Detail {
+        struct EnumInfo {
+            StringRef m_name;
+            std::vector<std::pair<int, std::string>> m_values;
 
-        virtual std::string lookup( int value ) const = 0;
-    };
+            ~EnumInfo();
+
+            StringRef lookup( int value ) const;
+        };
+    } // namespace Detail
 
     struct IMutableEnumValuesRegistry {
         virtual ~IMutableEnumValuesRegistry();
 
-        virtual IEnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
+        virtual Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values ) = 0;
 
         template<typename E>
-        IEnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
+        Detail::EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::initializer_list<E> values ) {
             std::vector<int> intValues;
             intValues.reserve( values.size() );
             for( auto enumValue : values )
@@ -1481,10 +1486,13 @@ namespace Catch {
     template<>
     struct StringMaker<float> {
         static std::string convert(float value);
+        static int precision;
     };
+
     template<>
     struct StringMaker<double> {
         static std::string convert(double value);
+        static int precision;
     };
 
     template <typename T>
@@ -1857,19 +1865,17 @@ struct ratio_string<std::milli> {
 }
 #endif // CATCH_CONFIG_ENABLE_CHRONO_STRINGMAKER
 
-#define INTERNAL_CATCH_STRINGIFY_ENUM( enumName, ... ) \
-    template<> struct ::Catch::StringMaker<enumName> { \
+#define INTERNAL_CATCH_REGISTER_ENUM( enumName, ... ) \
+namespace Catch { \
+    template<> struct StringMaker<enumName> { \
         static std::string convert( enumName value ) { \
             static const auto& enumInfo = ::Catch::getMutableRegistryHub().getMutableEnumValuesRegistry().registerEnum( #enumName, #__VA_ARGS__, { __VA_ARGS__ } ); \
             return enumInfo.lookup( static_cast<int>( value ) ); \
         } \
-    };
+    }; \
+}
 
-#ifdef CATCH_CONFIG_PREFIX_ALL
-#  define CATCH_STRINGIFY_ENUM( enumName, ... ) INTERNAL_CATCH_STRINGIFY_ENUM( enumName, __VA_ARGS__ )
-#else
-#  define STRINGIFY_ENUM( enumName, ... ) INTERNAL_CATCH_STRINGIFY_ENUM( enumName, __VA_ARGS__ )
-#endif
+#define CATCH_REGISTER_ENUM( enumName, ... ) INTERNAL_CATCH_REGISTER_ENUM( enumName, __VA_ARGS__ )
 
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -2900,10 +2906,9 @@ struct StringMaker<Catch::Detail::Approx> {
 
 #include <string>
 #include <iosfwd>
+#include <vector>
 
 namespace Catch {
-
-    class StringRef;
 
     bool startsWith( std::string const& s, std::string const& prefix );
     bool startsWith( std::string const& s, char prefix );
@@ -2913,8 +2918,10 @@ namespace Catch {
     void toLowerInPlace( std::string& s );
     std::string toLower( std::string const& s );
     std::string trim( std::string const& str );
+
+    // !!! Be aware, returns refs into original string - make sure original string outlives them
+    std::vector<StringRef> splitStringRef( StringRef str, char delimiter );
     bool replaceInPlace( std::string& str, std::string const& replaceThis, std::string const& withThis );
-    std::vector<std::string> splitString( StringRef str, char delimiter );
 
     struct pluralise {
         pluralise( std::size_t count, std::string const& label );
@@ -3162,7 +3169,7 @@ public:
 
     // The following functions create the actual matcher objects.
     // The user has to explicitly specify type to the function, because
-    // infering std::function<bool(T const&)> is hard (but possible) and
+    // inferring std::function<bool(T const&)> is hard (but possible) and
     // requires a lot of TMP.
     template<typename T>
     Generic::PredicateMatcher<T> Predicate(std::function<bool(T const&)> const& predicate, std::string const& description = "") {
@@ -3250,28 +3257,6 @@ namespace Catch {
 namespace Matchers {
 
     namespace Vector {
-        namespace Detail {
-            template <typename InputIterator, typename T>
-            size_t count(InputIterator first, InputIterator last, T const& item) {
-                size_t cnt = 0;
-                for (; first != last; ++first) {
-                    if (*first == item) {
-                        ++cnt;
-                    }
-                }
-                return cnt;
-            }
-            template <typename InputIterator, typename T>
-            bool contains(InputIterator first, InputIterator last, T const& item) {
-                for (; first != last; ++first) {
-                    if (*first == item) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
         template<typename T>
         struct ContainsElementMatcher : MatcherBase<std::vector<T>> {
 
@@ -3347,6 +3332,42 @@ namespace Matchers {
         };
 
         template<typename T>
+        struct ApproxMatcher : MatcherBase<std::vector<T>> {
+
+            ApproxMatcher(std::vector<T> const& comparator) : m_comparator( comparator ) {}
+
+            bool match(std::vector<T> const &v) const override {
+                if (m_comparator.size() != v.size())
+                    return false;
+                for (std::size_t i = 0; i < v.size(); ++i)
+                    if (m_comparator[i] != approx(v[i]))
+                        return false;
+                return true;
+            }
+            std::string describe() const override {
+                return "is approx: " + ::Catch::Detail::stringify( m_comparator );
+            }
+            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            ApproxMatcher& epsilon( T const& newEpsilon ) {
+                approx.epsilon(newEpsilon);
+                return *this;
+            }
+            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            ApproxMatcher& margin( T const& newMargin ) {
+                approx.margin(newMargin);
+                return *this;
+            }
+            template <typename = typename std::enable_if<std::is_constructible<double, T>::value>::type>
+            ApproxMatcher& scale( T const& newScale ) {
+                approx.scale(newScale);
+                return *this;
+            }
+
+            std::vector<T> const& m_comparator;
+            mutable Catch::Detail::Approx approx = Catch::Detail::Approx::custom();
+        };
+
+        template<typename T>
         struct UnorderedEqualsMatcher : MatcherBase<std::vector<T>> {
             UnorderedEqualsMatcher(std::vector<T> const& target) : m_target(target) {}
             bool match(std::vector<T> const& vec) const override {
@@ -3355,28 +3376,7 @@ namespace Matchers {
                 if (m_target.size() != vec.size()) {
                     return false;
                 }
-                auto lfirst = m_target.begin(), llast = m_target.end();
-                auto rfirst = vec.begin(), rlast = vec.end();
-                // Cut common prefix to optimize checking of permuted parts
-                while (lfirst != llast && *lfirst == *rfirst) {
-                    ++lfirst; ++rfirst;
-                }
-                if (lfirst == llast) {
-                    return true;
-                }
-
-                for (auto mid = lfirst; mid != llast; ++mid) {
-                    // Skip already counted items
-                    if (Detail::contains(lfirst, mid, *mid)) {
-                        continue;
-                    }
-                    size_t num_vec = Detail::count(rfirst, rlast, *mid);
-                    if (num_vec == 0 || Detail::count(lfirst, llast, *mid) != num_vec) {
-                        return false;
-                    }
-                }
-
-                return true;
+                return std::is_permutation(m_target.begin(), m_target.end(), vec.begin());
             }
 
             std::string describe() const override {
@@ -3404,6 +3404,11 @@ namespace Matchers {
     template<typename T>
     Vector::EqualsMatcher<T> Equals( std::vector<T> const& comparator ) {
         return Vector::EqualsMatcher<T>( comparator );
+    }
+
+    template<typename T>
+    Vector::ApproxMatcher<T> Approx( std::vector<T> const& comparator ) {
+        return Vector::ApproxMatcher<T>( comparator );
     }
 
     template<typename T>
@@ -4584,7 +4589,7 @@ namespace Catch {
         public:
             NamePattern( std::string const& name );
             virtual ~NamePattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const override;
+            bool matches( TestCaseInfo const& testCase ) const override;
         private:
             WildcardPattern m_wildcardPattern;
         };
@@ -4593,7 +4598,7 @@ namespace Catch {
         public:
             TagPattern( std::string const& tag );
             virtual ~TagPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const override;
+            bool matches( TestCaseInfo const& testCase ) const override;
         private:
             std::string m_tag;
         };
@@ -4602,7 +4607,7 @@ namespace Catch {
         public:
             ExcludedPattern( PatternPtr const& underlyingPattern );
             virtual ~ExcludedPattern();
-            virtual bool matches( TestCaseInfo const& testCase ) const override;
+            bool matches( TestCaseInfo const& testCase ) const override;
         private:
             PatternPtr m_underlyingPattern;
         };
@@ -4777,7 +4782,7 @@ namespace Catch {
         std::vector<std::string> const& getTestsOrTags() const override;
         std::vector<std::string> const& getSectionsToRun() const override;
 
-        virtual TestSpec const& testSpec() const override;
+        TestSpec const& testSpec() const override;
         bool hasTestFilters() const override;
 
         bool showHelp() const;
@@ -5468,11 +5473,11 @@ namespace Catch {
 
         class ReporterFactory : public IReporterFactory {
 
-            virtual IStreamingReporterPtr create( ReporterConfig const& config ) const override {
+            IStreamingReporterPtr create( ReporterConfig const& config ) const override {
                 return std::unique_ptr<T>( new T( config ) );
             }
 
-            virtual std::string getDescription() const override {
+            std::string getDescription() const override {
                 return T::getDescription();
             }
         };
@@ -5489,10 +5494,10 @@ namespace Catch {
 
         class ListenerFactory : public IReporterFactory {
 
-            virtual IStreamingReporterPtr create( ReporterConfig const& config ) const override {
+            IStreamingReporterPtr create( ReporterConfig const& config ) const override {
                 return std::unique_ptr<T>( new T( config ) );
             }
-            virtual std::string getDescription() const override {
+            std::string getDescription() const override {
                 return std::string();
             }
         };
@@ -5893,8 +5898,6 @@ namespace TestCaseTracking {
 
     public:
 
-        static TrackerContext& instance();
-
         ITracker& startRun();
         void endRun();
 
@@ -6040,18 +6043,18 @@ namespace Detail {
         return marginComparison(m_value, other, m_margin) || marginComparison(m_value, other, m_epsilon * (m_scale + std::fabs(m_value)));
     }
 
-    void Approx::setMargin(double margin) {
-        CATCH_ENFORCE(margin >= 0,
-            "Invalid Approx::margin: " << margin << '.'
+    void Approx::setMargin(double newMargin) {
+        CATCH_ENFORCE(newMargin >= 0,
+            "Invalid Approx::margin: " << newMargin << '.'
             << " Approx::Margin has to be non-negative.");
-        m_margin = margin;
+        m_margin = newMargin;
     }
 
-    void Approx::setEpsilon(double epsilon) {
-        CATCH_ENFORCE(epsilon >= 0 && epsilon <= 1.0,
-            "Invalid Approx::epsilon: " << epsilon << '.'
+    void Approx::setEpsilon(double newEpsilon) {
+        CATCH_ENFORCE(newEpsilon >= 0 && newEpsilon <= 1.0,
+            "Invalid Approx::epsilon: " << newEpsilon << '.'
             << " Approx::epsilon has to be in [0, 1]");
-        m_epsilon = epsilon;
+        m_epsilon = newEpsilon;
     }
 
 } // end namespace Detail
@@ -6687,6 +6690,9 @@ public:
 			m_suffix = false;
 			auto width = m_column.m_width - indent();
 			m_end = m_pos;
+			if (line()[m_pos] == '\n') {
+				++m_end;
+			}
 			while (m_end < line().size() && line()[m_end] != '\n')
 				++m_end;
 
@@ -8091,10 +8097,7 @@ namespace Catch {
         m_stream( openStream() )
     {
         TestSpecParser parser(ITagAliasRegistry::get());
-        if (data.testsOrTags.empty()) {
-            parser.parse("~[.]"); // All not hidden tests
-        }
-        else {
+        if (!data.testsOrTags.empty()) {
             m_hasTestFilters = true;
             for( auto const& testOrTags : data.testsOrTags )
                 parser.parse( testOrTags );
@@ -8212,7 +8215,7 @@ namespace {
             originalBackgroundAttributes = csbiInfo.wAttributes & ~( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY );
         }
 
-        virtual void use( Colour::Code _colourCode ) override {
+        void use( Colour::Code _colourCode ) override {
             switch( _colourCode ) {
                 case Colour::None:      return setTextAttribute( originalForegroundAttributes );
                 case Colour::White:     return setTextAttribute( FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE );
@@ -8275,7 +8278,7 @@ namespace {
     // https://github.com/philsquared/Catch/pull/131
     class PosixColourImpl : public IColourImpl {
     public:
-        virtual void use( Colour::Code _colourCode ) override {
+        void use( Colour::Code _colourCode ) override {
             switch( _colourCode ) {
                 case Colour::None:
                 case Colour::White:     return setColour( "[0m" );
@@ -8386,27 +8389,27 @@ namespace Catch {
     class Context : public IMutableContext, NonCopyable {
 
     public: // IContext
-        virtual IResultCapture* getResultCapture() override {
+        IResultCapture* getResultCapture() override {
             return m_resultCapture;
         }
-        virtual IRunner* getRunner() override {
+        IRunner* getRunner() override {
             return m_runner;
         }
 
-        virtual IConfigPtr const& getConfig() const override {
+        IConfigPtr const& getConfig() const override {
             return m_config;
         }
 
-        virtual ~Context() override;
+        ~Context() override;
 
     public: // IMutableContext
-        virtual void setResultCapture( IResultCapture* resultCapture ) override {
+        void setResultCapture( IResultCapture* resultCapture ) override {
             m_resultCapture = resultCapture;
         }
-        virtual void setRunner( IRunner* runner ) override {
+        void setRunner( IRunner* runner ) override {
             m_runner = runner;
         }
-        virtual void setConfig( IConfigPtr const& config ) override {
+        void setConfig( IConfigPtr const& config ) override {
             m_config = config;
         }
 
@@ -8472,19 +8475,23 @@ namespace Catch {
 #  include <stdbool.h>
 #  include <sys/types.h>
 #  include <unistd.h>
-#  include <sys/sysctl.h>
 #  include <cstddef>
 #  include <ostream>
 
-namespace Catch {
+#ifdef __apple_build_version__
+    // These headers will only compile with AppleClang (XCode)
+    // For other compilers (Clang, GCC, ... ) we need to exclude them
+#  include <sys/sysctl.h>
+#endif
 
+    namespace Catch {
+        #ifdef __apple_build_version__
         // The following function is taken directly from the following technical note:
-        // http://developer.apple.com/library/mac/#qa/qa2004/qa1361.html
+        // https://developer.apple.com/library/archive/qa/qa1361/_index.html
 
         // Returns true if the current process is being debugged (either
         // running under the debugger or has a debugger attached post facto).
         bool isDebuggerActive(){
-
             int                 mib[4];
             struct kinfo_proc   info;
             std::size_t         size;
@@ -8514,6 +8521,12 @@ namespace Catch {
 
             return ( (info.kp_proc.p_flag & P_TRACED) != 0 );
         }
+        #else
+        bool isDebuggerActive() {
+            // We need to find another way to determine this for non-appleclang compilers on macOS
+            return false;
+        }
+        #endif
     } // namespace Catch
 
 #elif defined(CATCH_PLATFORM_LINUX)
@@ -8599,16 +8612,19 @@ namespace Catch {
 // start catch_enum_values_registry.h
 
 #include <vector>
+#include <memory>
 
 namespace Catch {
 
     namespace Detail {
 
+        std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values );
+
         class EnumValuesRegistry : public IMutableEnumValuesRegistry {
 
-            std::vector<std::unique_ptr<IEnumInfo>> m_enumInfos;
+            std::vector<std::unique_ptr<EnumInfo>> m_enumInfos;
 
-            IEnumInfo const& registerEnum(StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
+            EnumInfo const& registerEnum( StringRef enumName, StringRef allEnums, std::vector<int> const& values) override;
         };
 
         std::vector<std::string> parseEnums( StringRef enums );
@@ -8620,60 +8636,57 @@ namespace Catch {
 // end catch_enum_values_registry.h
 
 #include <map>
+#include <cassert>
 
 namespace Catch {
 
     IMutableEnumValuesRegistry::~IMutableEnumValuesRegistry() {}
-    IEnumInfo::~IEnumInfo() {}
 
     namespace Detail {
 
         std::vector<std::string> parseEnums( StringRef enums ) {
-            auto enumValues = splitString( enums, ',' );
+            auto enumValues = splitStringRef( enums, ',' );
             std::vector<std::string> parsed;
             parsed.reserve( enumValues.size() );
             for( auto const& enumValue : enumValues ) {
-                auto identifiers = splitString( enumValue, ':' );
+                auto identifiers = splitStringRef( enumValue, ':' );
                 parsed.push_back( Catch::trim( identifiers.back() ) );
             }
             return parsed;
         }
 
-        struct EnumInfo : IEnumInfo {
-            std::string m_name;
-            std::map<int, std::string> m_values;
-
-            ~EnumInfo();
-
-            std::string lookup( int value ) const override {
-                auto it = m_values.find( value );
-                if( it == m_values.end() ) {
-                    ReusableStringStream rss;
-                    rss << "{** unexpected value for " << m_name << ": " << value << "**}";
-                    return rss.str();
-                }
-                return it->second;
-            }
-        };
         EnumInfo::~EnumInfo() {}
 
-        IEnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+        StringRef EnumInfo::lookup( int value ) const {
+            for( auto const& valueToName : m_values ) {
+                if( valueToName.first == value )
+                    return valueToName.second;
+            }
+            return "{** unexpected enum value **}";
+        }
+
+        std::unique_ptr<EnumInfo> makeEnumInfo( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
             std::unique_ptr<EnumInfo> enumInfo( new EnumInfo );
             enumInfo->m_name = enumName;
+            enumInfo->m_values.reserve( values.size() );
 
             const auto valueNames = Catch::Detail::parseEnums( allValueNames );
             assert( valueNames.size() == values.size() );
             std::size_t i = 0;
             for( auto value : values )
-                enumInfo->m_values.insert({ value, valueNames[i++] });
+                enumInfo->m_values.push_back({ value, valueNames[i++] });
 
+            return enumInfo;
+        }
+
+        EnumInfo const& EnumValuesRegistry::registerEnum( StringRef enumName, StringRef allValueNames, std::vector<int> const& values ) {
+            auto enumInfo = makeEnumInfo( enumName, allValueNames, values );
             EnumInfo* raw = enumInfo.get();
             m_enumInfos.push_back( std::move( enumInfo ) );
             return *raw;
         }
 
     } // Detail
-
 } // Catch
 
 // end catch_enum_values_registry.cpp
@@ -8700,7 +8713,7 @@ namespace Catch {
     public:
         ~ExceptionTranslatorRegistry();
         virtual void registerTranslator( const IExceptionTranslator* translator );
-        virtual std::string translateActiveException() const override;
+        std::string translateActiveException() const override;
         std::string tryTranslators() const;
 
     private:
@@ -9751,6 +9764,15 @@ namespace Catch {
             }
             return names.substr(start, end - start + 1);
         };
+        auto skipq = [&] (size_t start, char quote) {
+            for (auto i = start + 1; i < names.size() ; ++i) {
+                if (names[i] == quote)
+                    return i;
+                if (names[i] == '\\')
+                    ++i;
+            }
+            CATCH_INTERNAL_ERROR("CAPTURE parsing encountered unmatched parentheses");
+        };
 
         size_t start = 0;
         std::stack<char> openings;
@@ -9770,6 +9792,10 @@ namespace Catch {
             case ')':
 //           case '>':
                 openings.pop();
+                break;
+            case '"':
+            case '\'':
+                pos = skipq(pos, c);
                 break;
             case ',':
                 if (start != pos && openings.size() == 0) {
@@ -9973,7 +9999,7 @@ namespace Catch {
             if (strerror_s(buffer, errno)) {
                 CATCH_RUNTIME_ERROR("Could not translate errno to a string");
             }
-            CATCH_RUNTIME_ERROR("Coul dnot open the temp file: '" << m_buffer << "' because: " << buffer);
+            CATCH_RUNTIME_ERROR("Could not open the temp file: '" << m_buffer << "' because: " << buffer);
         }
     }
 #else
@@ -11055,7 +11081,10 @@ namespace Catch {
 
             auto const& allTestCases = getAllTestCasesSorted(*config);
             for (auto const& testCase : allTestCases) {
-                if (!context.aborting() && matchTest(testCase, testSpec, *config))
+                bool matching = (!testSpec.hasFilters() && !testCase.isHidden()) ||
+                                 (testSpec.hasFilters() && matchTest(testCase, testSpec, *config));
+
+                if (!context.aborting() && matching)
                     totals += context.runTest(testCase);
                 else
                     context.reporter().skipTest(testCase);
@@ -11547,8 +11576,8 @@ namespace Catch {
         return replaced;
     }
 
-    std::vector<std::string> splitString( StringRef str, char delimiter ) {
-        std::vector<std::string> subStrings;
+    std::vector<StringRef> splitStringRef( StringRef str, char delimiter ) {
+        std::vector<StringRef> subStrings;
         std::size_t start = 0;
         for(std::size_t pos = 0; pos < str.size(); ++pos ) {
             if( str[pos] == delimiter ) {
@@ -11797,7 +11826,7 @@ namespace Catch {
         void enforceNotReservedTag( std::string const& tag, SourceLineInfo const& _lineInfo ) {
             CATCH_ENFORCE( !isReservedTag(tag),
                           "Tag name: [" << tag << "] is not allowed.\n"
-                          << "Tag names starting with non alpha-numeric characters are reserved\n"
+                          << "Tag names starting with non alphanumeric characters are reserved\n"
                           << _lineInfo );
         }
     }
@@ -11979,9 +12008,12 @@ namespace Catch {
     std::vector<TestCase> filterTests( std::vector<TestCase> const& testCases, TestSpec const& testSpec, IConfig const& config ) {
         std::vector<TestCase> filtered;
         filtered.reserve( testCases.size() );
-        for( auto const& testCase : testCases )
-            if( matchTest( testCase, testSpec, config ) )
-                filtered.push_back( testCase );
+        for (auto const& testCase : testCases) {
+            if ((!testSpec.hasFilters() && !testCase.isHidden()) ||
+                (testSpec.hasFilters() && matchTest(testCase, testSpec, config))) {
+                filtered.push_back(testCase);
+            }
+        }
         return filtered;
     }
     std::vector<TestCase> const& getAllTestCasesSorted( IConfig const& config ) {
@@ -12056,11 +12088,6 @@ namespace TestCaseTracking {
     {}
 
     ITracker::~ITracker() = default;
-
-    TrackerContext& TrackerContext::instance() {
-        static TrackerContext s_instance;
-        return s_instance;
-    }
 
     ITracker& TrackerContext::startRun() {
         m_rootTracker = std::make_shared<SectionTracker>( NameAndLocation( "{root}", CATCH_INTERNAL_LINEINFO ), *this, nullptr );
@@ -12721,11 +12748,16 @@ std::string StringMaker<std::nullptr_t>::convert(std::nullptr_t) {
     return "nullptr";
 }
 
+int StringMaker<float>::precision = 5;
+
 std::string StringMaker<float>::convert(float value) {
-    return fpToString(value, 5) + 'f';
+    return fpToString(value, precision) + 'f';
 }
+
+int StringMaker<double>::precision = 10;
+
 std::string StringMaker<double>::convert(double value) {
-    return fpToString(value, 10);
+    return fpToString(value, precision);
 }
 
 std::string ratio_string<std::atto>::symbol() { return "a"; }
@@ -12843,7 +12875,7 @@ namespace Catch {
     }
 
     Version const& libraryVersion() {
-        static Version version( 2, 7, 0, "develop", 2 );
+        static Version version( 2, 7, 2, "develop", 1 );
         return version;
     }
 
@@ -14202,22 +14234,6 @@ namespace Catch {
     void JunitReporter::testRunStarting( TestRunInfo const& runInfo )  {
         CumulativeReporterBase::testRunStarting( runInfo );
         xml.startElement( "testsuites" );
-
-        if ( m_config->hasTestFilters() || m_config->rngSeed() != 0 )
-            xml.startElement("properties");
-
-        if ( m_config->hasTestFilters() ) {
-            xml.scopedElement( "property" )
-                .writeAttribute( "name" , "filters" )
-                .writeAttribute( "value" , serializeFilters( m_config->getTestsOrTags() ) );
-        }
-
-        if( m_config->rngSeed() != 0 ) {
-            xml.scopedElement( "property" )
-                .writeAttribute( "name", "random-seed" )
-                .writeAttribute( "value", m_config->rngSeed() );
-            xml.endElement();
-        }
     }
 
     void JunitReporter::testGroupStarting( GroupInfo const& groupInfo ) {
@@ -14256,6 +14272,7 @@ namespace Catch {
 
     void JunitReporter::writeGroup( TestGroupNode const& groupNode, double suiteTime ) {
         XmlWriter::ScopedElement e = xml.scopedElement( "testsuite" );
+
         TestGroupStats const& stats = groupNode.value;
         xml.writeAttribute( "name", stats.groupInfo.name );
         xml.writeAttribute( "errors", unexpectedExceptions );
@@ -14267,6 +14284,21 @@ namespace Catch {
         else
             xml.writeAttribute( "time", suiteTime );
         xml.writeAttribute( "timestamp", getCurrentTimestamp() );
+
+        // Write properties if there are any
+        if (m_config->hasTestFilters() || m_config->rngSeed() != 0) {
+            auto properties = xml.scopedElement("properties");
+            if (m_config->hasTestFilters()) {
+                xml.scopedElement("property")
+                    .writeAttribute("name", "filters")
+                    .writeAttribute("value", serializeFilters(m_config->getTestsOrTags()));
+            }
+            if (m_config->rngSeed() != 0) {
+                xml.scopedElement("property")
+                    .writeAttribute("name", "random-seed")
+                    .writeAttribute("value", m_config->rngSeed());
+            }
+        }
 
         // Write test cases
         for( auto const& child : groupNode.children )
