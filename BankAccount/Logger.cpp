@@ -1,5 +1,7 @@
 #include "Logger.h"
 
+#include <memory>
+
 std::string logFile = "log.txt";
 
 LogLevel Logger::s_currentLogLevel = LogLevel::Info;
