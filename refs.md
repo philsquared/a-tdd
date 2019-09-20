@@ -51,3 +51,5 @@ The following are some of the references, and source materials, from my class, A
 ## Other resources:
 
 * [Cyber-dojo](http://cyber-dojo.org)
+* [Provable Refactorings (repo)](https://github.com/digdeeproots/provable-refactorings)
+
