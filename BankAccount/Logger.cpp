@@ -35,10 +35,10 @@ public:
             throw std::domain_error("Log line too long");
 
         // Get current date-time in printable form
-        time_t now = time(0);
-        tm tstruct = *localtime(&now);
+        std::time_t now = std::time(0);
+        std::tm tstruct = *std::localtime(&now);
         char buf[80];
-        strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
+        std::strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
         of << buf << " ";
 
         switch( level ) {
