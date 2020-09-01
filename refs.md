@@ -14,6 +14,8 @@ The following are some of the references, and source materials, from my class, A
 * [Patryk Małek - Property Based Testing (with RapidCheck)](https://www.youtube.com/watch?v=aiapg-3vDcQ)
 * [Clare Macrae on Approval Testing & Legacy code](https://www.youtube.com/watch?v=tXEuf_3VzRE)
 * [Kevlin Henney - Introducing the FLUID principles (Slides)](https://www.slideshare.net/Kevlin/introducing-the-fluid-principles)
+* [Seph De Busser - Testing The Tests: Mutation Testing for C++](https://www.youtube.com/watch?v=M-5_M8qZXaE)
+* [Viktor Kirilov - The Hitchhiker's Guide to Faster Builds](https://www.youtube.com/watch?v=anbOy47fBYI)
 
 ## Books:
 
