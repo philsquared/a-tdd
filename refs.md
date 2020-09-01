@@ -12,7 +12,7 @@ The following are some of the references, and source materials, from my class, A
 * [Dan North on Deliberate Learning](https://www.youtube.com/watch?v=SPj-23z-hQA)
 * [Marshall Clow - Making Your Library More Reliable with Fuzzing](https://www.youtube.com/watch?v=LlLJRHToyUk)
 * [Patryk Małek - Property Based Testing (with RapidCheck)](https://www.youtube.com/watch?v=aiapg-3vDcQ)
-* [Clare Macrae on Approval Testing & Legacy code](https://www.youtube.com/watch?v=dtm8V3TIB6k)
+* [Clare Macrae on Approval Testing & Legacy code](https://www.youtube.com/watch?v=tXEuf_3VzRE)
 * [Kevlin Henney - Introducing the FLUID principles (Slides)](https://www.slideshare.net/Kevlin/introducing-the-fluid-principles)
 
 ## Books:
