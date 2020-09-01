@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
+#include <string_view>
 
 enum class LogLevel {
     Error,
