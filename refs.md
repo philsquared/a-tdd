@@ -36,7 +36,7 @@ The following are some of the references, and source materials, from my class, A
 * [Critiques of NIST report on software bugs](http://www.satisfice.com/nist.htm)
 * [PRWeb Article on 2013 Cambridge University study on cost of software bugs](http://www.prweb.com/releases/2013/1/prweb10298185.htm)
 * [Scott Wlaschin on The Roman Numerals Kata](https://fsharpforfunandprofit.com/posts/roman-numeral-kata/)
-* [The Mikado Method](https://pragprog.com/magazines/2010-06/the-mikado-method)
+* [The Mikado Method](https://livebook.manning.com/book/the-mikado-method/chapter-1)
 
 ## Libraries & Frameworks
 * [Catch2 (Phil Nash's test framework)](http://catch-lib.net)
