@@ -7,7 +7,7 @@ struct Portal {
     uint32_t target;
 };
 
-std::map<uint32_t, Portal> portals =
+std::map<uint32_t, Portal> const portals =
         {
                 { 2, { Portal::Type::Ladder, 38 } },
                 { 4, { Portal::Type::Ladder, 14 } },
