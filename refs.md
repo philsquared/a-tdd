@@ -6,16 +6,19 @@ The following are some of the references, and source materials, from my class, A
 
 * [Kevlin Henney - Seven Ineffective Coding Habits (timed to section on TDD)](https://www.youtube.com/watch?v=SUIUZ09mnwM&feature=youtu.be&t=49m52s)
 * [Kevlin Henney - Deconstructing SOLID](https://vimeo.com/157708450)
-* [Phil Nash on Catch (1.x)](https://www.youtube.com/watch?v=C2LcIp56i-8)
-* [Phil Nash on Catch2](https://www.youtube.com/watch?v=3tIE6X5FjDE)
-* [Phil Nash - Seeking Simplicity](https://www.youtube.com/watch?v=EeviEFkKb6M&t=0s&list=PLJ8qy7OeQ8LQ3dgDOGAGDXBKvh0UItjE6&index=2)
 * [Dan North on Deliberate Learning](https://www.youtube.com/watch?v=SPj-23z-hQA)
+* [Dan North - Why Every Single Element of SOLID is Wrong! (slides)](https://speakerdeck.com/tastapod/why-every-element-of-solid-is-wrong)
+* [Klaus Iglberger - Breaking Dependencies: The SOLID Principles](https://www.youtube.com/watch?v=Ntraj80qN2k)
 * [Marshall Clow - Making Your Library More Reliable with Fuzzing](https://www.youtube.com/watch?v=LlLJRHToyUk)
 * [Patryk Małek - Property Based Testing (with RapidCheck)](https://www.youtube.com/watch?v=aiapg-3vDcQ)
 * [Clare Macrae on Approval Testing & Legacy code](https://www.youtube.com/watch?v=tXEuf_3VzRE)
 * [Kevlin Henney - Introducing the FLUID principles (Slides)](https://www.slideshare.net/Kevlin/introducing-the-fluid-principles)
 * [Seph De Busser - Testing The Tests: Mutation Testing for C++](https://www.youtube.com/watch?v=M-5_M8qZXaE)
 * [Viktor Kirilov - The Hitchhiker's Guide to Faster Builds](https://www.youtube.com/watch?v=anbOy47fBYI)
+* [Phil Nash on Catch (1.x)](https://www.youtube.com/watch?v=C2LcIp56i-8)
+* [Phil Nash on Catch2](https://www.youtube.com/watch?v=3tIE6X5FjDE)
+* [Phil Nash - SOLID Revisited](https://www.youtube.com/watch?v=Ko0eV7BGcXs)
+* [Phil Nash - Seeking Simplicity](https://www.youtube.com/watch?v=EeviEFkKb6M)
 
 ## Books:
 
