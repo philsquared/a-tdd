@@ -2,6 +2,10 @@
 
 The following are some of the references, and source materials, from my class, Accelerated TDD
 
+## Slides:
+* [Day 1](https://www.dropbox.com/scl/fi/rawu61d6937ucxr6a5l93/AccTDD-1.pdf?rlkey=tcymlztqhdkjlzuwnuv26gd47&dl=0)
+* [Day 2](https://www.dropbox.com/s/1c3lv1v9usezhq1/AccTDD-2.pdf?dl=0)
+
 ## Talks:
 
 * [Kevlin Henney - Seven Ineffective Coding Habits (timed to section on TDD)](https://www.youtube.com/watch?v=SUIUZ09mnwM&feature=youtu.be&t=49m52s)
