@@ -19,6 +19,7 @@ The following are some of the references, and source materials, from my class, A
 * [Phil Nash on Catch2](https://www.youtube.com/watch?v=3tIE6X5FjDE)
 * [Phil Nash - SOLID Revisited](https://www.youtube.com/watch?v=Ko0eV7BGcXs)
 * [Phil Nash - Seeking Simplicity](https://www.youtube.com/watch?v=EeviEFkKb6M)
+* [Phil Nash - Zen and the Art of Code Lifecycle Maintenance](https://www.youtube.com/watch?v=_vl8hj7NUXs)
 
 ## Books:
 
