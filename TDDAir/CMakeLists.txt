@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.20)
 project(TDDAir)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -17,6 +17,7 @@ add_executable(
         tests.cpp
         Flight.cpp
         Flight.h
+        MemberTests.cpp
 )
 
 target_link_libraries(
