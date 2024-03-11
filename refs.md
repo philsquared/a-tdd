@@ -24,6 +24,7 @@ The following are some of the references, and source materials, from my class, A
 * [Phil Nash - SOLID Revisited](https://www.youtube.com/watch?v=Ko0eV7BGcXs)
 * [Phil Nash - Seeking Simplicity](https://www.youtube.com/watch?v=EeviEFkKb6M)
 * [Phil Nash - Zen and the Art of Code Lifecycle Maintenance](https://www.youtube.com/watch?v=_vl8hj7NUXs)
+* [Phil Nash - Rewiring your Brain with Test Driven Thinking](https://www.youtube.com/watch?v=Hx-1Wtvhvgw)
 
 ## Books:
 
