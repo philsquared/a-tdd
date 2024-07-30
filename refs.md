@@ -3,8 +3,15 @@
 The following are some of the references, and source materials, from my class, Accelerated TDD
 
 ## Slides:
-* [Day 1](https://www.dropbox.com/scl/fi/bvmyjncgfrss9b3i7k6ho/AccTDD-1.pdf?rlkey=ir13zspohi9zxavuym8xcj90b&dl=0)
-* [Day 2](https://www.dropbox.com/scl/fi/3lmgojwd5so98py5o3wcr/AccTDD-2.pdf?rlkey=4veajbfaktxbs8ac04r2seste&dl=0)
+* Day 1
+	* [Intro](https://www.dropbox.com/scl/fi/pfj41x620cp6fc7vnwbce/0.-Intro.pdf?rlkey=sxurivceouuh6eawif1zs37kp&dl=0)
+	* [Foundations](https://www.dropbox.com/scl/fi/wqnri1lop3xse7szyjn8s/1.-Foundations.pdf?rlkey=t41h5bjjig9kxnbhjqgveq99o&dl=0)
+	* [TDD in Practice](https://www.dropbox.com/scl/fi/521tj633w5gih1kix9wl8/2.-TDD-in-practice.pdf?rlkey=uf6u4i43rfclat1awbxzsfqbw&dl=0)
+	* [Principles of Testing](https://www.dropbox.com/scl/fi/j8m3nec1527s3db8ehp51/3.-Principles-of-Testing.pdf?rlkey=4z4txi0foeczvagf95ms1ci92&dl=0)
+* Day 2
+	* coming soon ...
+* Day 3
+	* coming soon ...
 
 ## Talks:
 
