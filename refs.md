@@ -19,6 +19,7 @@ The following are some of the references, and source materials, from my class, A
 * [Kevlin Henney - Introducing the FLUID principles (Slides)](https://www.slideshare.net/Kevlin/introducing-the-fluid-principles)
 * [Seph De Busser - Testing The Tests: Mutation Testing for C++](https://www.youtube.com/watch?v=M-5_M8qZXaE)
 * [Viktor Kirilov - The Hitchhiker's Guide to Faster Builds](https://www.youtube.com/watch?v=anbOy47fBYI)
+* [Steve Freeman - Fractal TDD](https://www.youtube.com/watch?v=7D3t8m4ejMk)
 * [Phil Nash on Catch (1.x)](https://www.youtube.com/watch?v=C2LcIp56i-8)
 * [Phil Nash on Catch2](https://www.youtube.com/watch?v=3tIE6X5FjDE)
 * [Phil Nash - SOLID Revisited](https://www.youtube.com/watch?v=Ko0eV7BGcXs)
