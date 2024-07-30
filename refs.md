@@ -6,7 +6,8 @@ The following are some of the references, and source materials, from my class, A
 * Day 1
 	* [Intro](https://www.dropbox.com/scl/fi/pfj41x620cp6fc7vnwbce/0.-Intro.pdf?rlkey=sxurivceouuh6eawif1zs37kp&dl=0)
 	* [Foundations](https://www.dropbox.com/scl/fi/wqnri1lop3xse7szyjn8s/1.-Foundations.pdf?rlkey=t41h5bjjig9kxnbhjqgveq99o&dl=0)
-	* [TDD in Practice](https://www.dropbox.com/scl/fi/521tj633w5gih1kix9wl8/2.-TDD-in-practice.pdf?rlkey=uf6u4i43rfclat1awbxzsfqbw&dl=0)
+	* [TDD in Practice](https://www.dropbox.com/scl/fi/dy1ztayn51mpg93y7tqcg/2.-TDD-in-practice.pdf?rlkey=c0da70k9d4jtkrbjphfxnao3f&dl=0)
+	
 	* [Principles of Testing](https://www.dropbox.com/scl/fi/j8m3nec1527s3db8ehp51/3.-Principles-of-Testing.pdf?rlkey=4z4txi0foeczvagf95ms1ci92&dl=0)
 * Day 2
 	* coming soon ...
