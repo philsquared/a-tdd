@@ -9,7 +9,9 @@ The following are some of the references, and source materials, from my class, A
 	* [TDD in Practice](https://www.dropbox.com/scl/fi/dy1ztayn51mpg93y7tqcg/2.-TDD-in-practice.pdf?rlkey=c0da70k9d4jtkrbjphfxnao3f&dl=0)
 	* [Principles of Testing](https://www.dropbox.com/scl/fi/j8m3nec1527s3db8ehp51/3.-Principles-of-Testing.pdf?rlkey=4z4txi0foeczvagf95ms1ci92&dl=0)
 * Day 2
-	* coming soon ...
+	* [Design Principles](https://www.dropbox.com/scl/fi/kiwt9av4mmqp4h9g6endt/4.-Design-Principles.pdf?rlkey=5o3phkkuh81rb6jwnu50kpdvj&dl=0)
+	* [Forms of Testing](https://www.dropbox.com/scl/fi/2rziq8fgctfpzjkulaqqd/5.-Forms-of-Testing.pdf?rlkey=wdeg5995or9g03pjqofjwmm5b&dl=0)
+	* [Test Doubles](https://www.dropbox.com/scl/fi/qvrnscrkkqpf2qm3wgw3h/6.-Test-Doubles.pdf?rlkey=rxc0fyndou1h0zems13wrbxy5&dl=0)
 * Day 3
 	* coming soon ...
 
@@ -41,6 +43,7 @@ The following are some of the references, and source materials, from my class, A
 * [Clean Code - Robert Martin](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882/ref=sr_1_2?ie=UTF8&qid=1538268311&sr=8-2&keywords=working+with+legacy+code)
 * [Refactoring - Martin Fowler](https://www.amazon.com/Refactoring-Improving-Design-Existing-Code/dp/0201485672/ref=sr_1_4?ie=UTF8&qid=1538268311&sr=8-4&keywords=working+with+legacy+code)
 * [Domain Driven Design - Eric Evans](http://dddcommunity.org/book/evans_2003/)
+* [The Prgamatic Programmer](https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/)
 
 ## Articles & Blogs
 * [Phil Nash - More Productive C++ with TDD](https://levelofindirection.com/blog/more-productive-cpp-with-tdd.html)
