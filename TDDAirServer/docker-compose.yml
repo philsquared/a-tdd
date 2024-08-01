@@ -1,0 +1,39 @@
+# Ensure the following are defined in a .env file:
+#   FLASK_RUN_PORT
+#   DB_NAME
+#   DB_URL
+#   DB_PASSWORD
+version: '3'
+services:
+  db:
+    image: "postgres:16"
+    networks:
+      - db_nw
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "${PUBLIC_DB_PORT}:5432"
+  tddair:
+    image: webapp-tddair
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+          FLASK_RUN_PORT: ${FLASK_RUN_PORT}
+    volumes:
+      - "./:/app"
+    networks:
+      - db_nw
+    ports:
+      - "${FLASK_RUN_PORT}:${FLASK_RUN_PORT}"
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_URL=${DB_URL}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - FLASK_RUN_PORT=${FLASK_RUN_PORT}
+networks:
+  db_nw:
+volumes:
+  db-data:

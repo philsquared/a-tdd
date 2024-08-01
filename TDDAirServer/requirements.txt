@@ -1,0 +1,7 @@
+Werkzeug==3.0.3
+uWSGI==2.0.26
+psycopg2==2.9.9 ; sys_platform  != 'darwin'
+psycopg2-binary==2.9.9 ; sys_platform  == 'darwin'
+pydantic==2.8.2
+pydantic-settings==2.3.4
+python-dotenv==1.0.1
