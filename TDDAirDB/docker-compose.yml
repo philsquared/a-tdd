@@ -1,0 +1,18 @@
+# Ensure the following are defined in a .env file:
+#   DB_PASSWORD
+version: '3'
+services:
+  db:
+    image: "postgres:16"
+    networks:
+      - db_nw
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+networks:
+  db_nw:
+    name: shared_tddair_db_nw
+    external: true
+volumes:
+  db-data:
