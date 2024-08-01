@@ -15,7 +15,7 @@ namespace TddAir {
     namespace net = boost::asio;        // from <boost/asio.hpp>
     using tcp = net::ip::tcp;           // from <boost/asio/ip/tcp.hpp>
 
-    std::string required_api_version = "0.1";
+    std::string required_api_version = "0.2";
 
     // Parse url string into host, port and (optionally) initial target
     Request::Request(std::string_view base_url) {

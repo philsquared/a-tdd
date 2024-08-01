@@ -4,7 +4,7 @@ from http import HTTPStatus
 
 from werkzeug import Response
 
-api_version = "0.1"
+api_version = "0.2"
 
 
 @dataclass
