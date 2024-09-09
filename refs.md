@@ -57,6 +57,7 @@ The following are some of the references, and source materials, from my class, A
 * [PRWeb Article on 2013 Cambridge University study on cost of software bugs](http://www.prweb.com/releases/2013/1/prweb10298185.htm)
 * [Scott Wlaschin on The Roman Numerals Kata](https://fsharpforfunandprofit.com/posts/roman-numeral-kata/)
 * [The Mikado Method](https://livebook.manning.com/book/the-mikado-method/chapter-1)
+* [About time - how to unit test code that depends on time](https://playfulprogramming.blogspot.com/2023/12/about-time.html)
 
 ## Libraries & Frameworks
 * [Catch2 (Phil Nash's test framework)](http://catch-lib.net)
