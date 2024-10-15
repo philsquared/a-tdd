@@ -2,3 +2,4 @@ BankAccount/.idea
 BankAccount/cmake-build-*
 left-pad/.idea
 **/cmake-build-*
+.idea
