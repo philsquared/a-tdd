@@ -14,7 +14,7 @@ class Environment : public ::testing::Environment {
 public:
     void SetUp() override {
         Request req(server_url);
-        auto status_json = req.post("/admin/status");
+        auto status_json = req.post_no_retry("/admin/status");
         std::cout << status_json << std::endl;
         std::cout << req.post("/admin/create_db", {{"delete-if-exists", true}}) << std::endl;
 

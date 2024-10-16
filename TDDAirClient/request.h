@@ -19,6 +19,7 @@ namespace TddAir {
         [[nodiscard]] std::string target() const { return m_initial_target; }
 
         json post(std::string const& target = {}, json const& data = {}, bool api_check = true, int attempt=0);
+        json post_no_retry(std::string const& target = {}, json const& data = {}, bool api_check = true);
     };
 
 }

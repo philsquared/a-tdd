@@ -86,8 +86,9 @@ namespace TddAir {
         json response_data = json::parse(result.body());
 
         if( response_data["code"] != 200 && attempt < backoff_delays.size() ) {
+            std::cout << "failed. Will retry (attempt #" << attempt << ")" << std::endl;
+            std::cout << "\t" << response_data << std::endl;
             std::this_thread::sleep_for(backoff_delays[attempt]);
-            std::cout << "failed. Retry attempt #" << attempt << std::endl;
             return post(target, data, api_check, attempt+1);
         }
         if( api_check ) {
@@ -98,4 +99,8 @@ namespace TddAir {
         }
         return response_data;
     }
+    json Request::post_no_retry(std::string const& target, json const& data, bool api_check) {
+        return post(target, data, api_check, backoff_delays.size()+1);
+    }
+
 }
