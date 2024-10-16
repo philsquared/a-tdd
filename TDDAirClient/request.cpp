@@ -6,6 +6,15 @@
 #include <boost/asio/connect.hpp>
 #include <boost/asio/ip/tcp.hpp>
 
+#include <thread>
+#include <chrono>
+#include <iostream>
+#include <array>
+
+using namespace std::chrono_literals;
+
+std::array<std::chrono::milliseconds, 6> backoff_delays = { 10ms, 100ms, 200ms, 300ms, 500ms, 500ms };
+
 // Boost.Beast usage based on example here:
 // https://www.boost.org/doc/libs/master/libs/beast/example/http/client/methods/http_client_methods.cpp
 
@@ -41,7 +50,7 @@ namespace TddAir {
         }
     }
 
-    json Request::post(std::string const& target, json const& data, bool api_check) {
+    json Request::post(std::string const& target, json const& data, bool api_check, int attempt) {
         std::string data_str = data.dump();
 
         net::io_context ioc;
@@ -70,13 +79,17 @@ namespace TddAir {
         std::ignore = stream.socket().shutdown(tcp::socket::shutdown_both, ec);
 
         // not_connected happens sometimes
-        // so don't bother reporting it.
-        //
+        // so don't bother reporting it
         if (ec && ec != beast::errc::not_connected)
             throw beast::system_error{ec};
 
         json response_data = json::parse(result.body());
 
+        if( response_data["code"] != 200 && attempt < backoff_delays.size() ) {
+            std::this_thread::sleep_for(backoff_delays[attempt]);
+            std::cout << "failed. Retry attempt #" << attempt << std::endl;
+            return post(target, data, api_check, attempt+1);
+        }
         if( api_check ) {
             auto api_version = response_data.value("api_version", "<no API version returned>");
             if (api_version != required_api_version)

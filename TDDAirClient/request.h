@@ -18,7 +18,7 @@ namespace TddAir {
         [[nodiscard]] std::string port() const { return m_port; }
         [[nodiscard]] std::string target() const { return m_initial_target; }
 
-        json post(std::string const& target = {}, json const& data = {}, bool api_check = true);
+        json post(std::string const& target = {}, json const& data = {}, bool api_check = true, int attempt=0);
     };
 
 }
