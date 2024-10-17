@@ -10,14 +10,13 @@
 
 using namespace TddAir;
 
-//const std::string server_url = "localhost:5001";
-const std::string server_url = "tddair.atdd.dev:5201";
+const std::string server_url = "abc.def"; // No longer used
 
 #include <gmock/gmock.h>
 class FakeRequest : public Request {
 public:
     FakeRequest() : Request("") {}
-    MOCK_METHOD(json, post, (std::string const& target, json const& data, bool api_check), (override));
+    MOCK_METHOD(json, post, (std::string const& target, json const& data, bool api_check, int attempt), (override));
 };
 
 class Environment : public ::testing::Environment {
@@ -51,7 +50,7 @@ using ::testing::Return;
 
 TEST(MemberTests, retrieveAMember) {
     FakeRequest req;
-    EXPECT_CALL(req, post("/get-member",_,_))
+    EXPECT_CALL(req, post("/get-member",_,_,_))
       .Times(AtLeast(1))
         .WillOnce(Return(json{
             {"code", 200},
@@ -66,7 +65,7 @@ TEST(MemberTests, retrieveAMember) {
 
 TEST(FlightTests, retrieveAFlight) {
     FakeRequest req;
-    EXPECT_CALL(req, post("/get-flight",_,_))
+    EXPECT_CALL(req, post("/get-flight",_,_,_))
       .Times(AtLeast(1))
         .WillOnce(Return(json{
             {"code", 200},
