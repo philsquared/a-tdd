@@ -4,7 +4,7 @@ We've all heard of the notorious left-pad javascript library that was
 pulled from NPM a few years ago.
 We scoffed at how having a dependency on such a trivial library disrupted
 so much of the internet.
-But how trivial was it really? Let's implement it in C++!
+But how trivial was it really? Let's implement it in Python!
 
 The requirements are:
 
