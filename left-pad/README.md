@@ -13,4 +13,4 @@ The requirements are:
 * The returned string should be the input string,
   padded with spaces on the left if shorter than the size argument.
 * The pad character should be optionally specifiable via an extra, defaulted argument
-
+* Assume that `str.rjust` is not a thing!
