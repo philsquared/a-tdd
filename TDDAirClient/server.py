@@ -1,6 +1,6 @@
 import requests
 
-server_url = "http://localhost:5001"
+server_url = "http://localhost:5200"
 
 class Server:
     def post_request(self, command: str, args):
