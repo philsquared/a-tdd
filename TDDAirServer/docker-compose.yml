@@ -33,6 +33,8 @@ services:
       - DB_URL=${DB_URL}
       - DB_PASSWORD=${DB_PASSWORD}
       - FLASK_RUN_PORT=${FLASK_RUN_PORT}
+    depends_on:
+      - db
 networks:
   db_nw:
 volumes:
