@@ -96,6 +96,8 @@ class AdminHandler:
         except Exception as e:
             if db:
                 db.close()
+            print("Error creating database")
+            print(str(e))
             return ResponseData(
                 code=HTTPStatus.INTERNAL_SERVER_ERROR,
                 status="Unable to connect to database server",
