@@ -5,15 +5,16 @@ The following are some of the references, and source materials, from my class, A
 ## Slides:
 * Day 1
 	* [Intro](https://www.dropbox.com/scl/fi/pfj41x620cp6fc7vnwbce/0.-Intro.pdf?rlkey=sxurivceouuh6eawif1zs37kp&dl=0)
-	* [Foundations](https://www.dropbox.com/scl/fi/wqnri1lop3xse7szyjn8s/1.-Foundations.pdf?rlkey=t41h5bjjig9kxnbhjqgveq99o&dl=0)
-	* [TDD in Practice](https://www.dropbox.com/scl/fi/dy1ztayn51mpg93y7tqcg/2.-TDD-in-practice.pdf?rlkey=c0da70k9d4jtkrbjphfxnao3f&dl=0)
-	* [Principles of Testing](https://www.dropbox.com/scl/fi/j8m3nec1527s3db8ehp51/3.-Principles-of-Testing.pdf?rlkey=4z4txi0foeczvagf95ms1ci92&dl=0)
+	* [Foundations](https://www.dropbox.com/scl/fi/kexx1rzrk0seh4365ccts/1.-Foundations.pdf?rlkey=yo8hfgbed14ixvbc8nkwy0ygv&dl=0)
+	* [TDD in Practice](https://www.dropbox.com/scl/fi/nm9m85ei7zkesora1j4vg/2.-TDD-in-practice.pdf?rlkey=y9a3grr7fyw9glmioq6ygpt7j&dl=0)
+	* [Principles of Testing](https://www.dropbox.com/scl/fi/93wn6g9qilkh3p0y7n8qy/3.-Principles-of-Testing.pdf?rlkey=rviz9d0wcykcjv4j3t5akwn75&dl=0)
 * Day 2
-	* [Design Principles](https://www.dropbox.com/scl/fi/kiwt9av4mmqp4h9g6endt/4.-Design-Principles.pdf?rlkey=5o3phkkuh81rb6jwnu50kpdvj&dl=0)
-	* [Forms of Testing](https://www.dropbox.com/scl/fi/2rziq8fgctfpzjkulaqqd/5.-Forms-of-Testing.pdf?rlkey=wdeg5995or9g03pjqofjwmm5b&dl=0)
-	* [Test Doubles](https://www.dropbox.com/scl/fi/qvrnscrkkqpf2qm3wgw3h/6.-Test-Doubles.pdf?rlkey=rxc0fyndou1h0zems13wrbxy5&dl=0)
+	* [Design Principles](https://www.dropbox.com/scl/fi/8hisditz2vmyimzpkufak/4.-Design-Principles.pdf?rlkey=doavzl5hox27yybh8jf4hglcr&dl=0)
+	* [Forms of Testing](https://www.dropbox.com/scl/fi/p8fwlfclunxee9njf2g88/5.-Forms-of-Testing.pdf?rlkey=yczavc3y215vysr9e1xj8qwmo&dl=0)
+	* [Test Doubles](https://www.dropbox.com/scl/fi/t9ac7w4hlrdxzqbhdc6a8/6.-Test-Doubles.pdf?rlkey=8fkkrqakdr7qawygobx11h0ay&dl=0)
 * Day 3
-	* coming soon ...
+	* [Legacy Code](https://www.dropbox.com/scl/fi/ctjxq2z0v2kem3r4ictbs/7.-Legacy-Code.pdf?rlkey=qdu258vllcb5zbn5hce1i49q6&dl=0)
+	* [Miscellanea](https://www.dropbox.com/scl/fi/5dkpn97dcovip598y3cgz/9.-Miscellanea.pdf?rlkey=wof85cz5k667jmos15yj6uevw&dl=0)
 
 ## Talks:
 
