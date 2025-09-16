@@ -15,7 +15,7 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(monopoly2 main.cpp
-        die_roll.h)
+        random_number.h)
 
 target_link_libraries(
         monopoly2
