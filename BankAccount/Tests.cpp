@@ -1,7 +1,7 @@
 #include "BankAccount.h"
-#include "catch.hpp"
+#include <gtest/gtest.h>
 
-TEST_CASE() {
+TEST(BankAccountTests, TransferFunds) {
 
     Account bob( 123 );
     Account alice( 456 );
@@ -11,6 +11,6 @@ TEST_CASE() {
 
     transferFunds( bob, alice, 100.0 );
 
-    REQUIRE( bob.balance() == 300 );
-    REQUIRE( alice.balance() == 600 );
+    EXPECT_EQ( bob.balance(), 300 );
+    EXPECT_EQ( alice.balance(), 600 );
 }
